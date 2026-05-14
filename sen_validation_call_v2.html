@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEN Acquisition — 10-Min Validation Call</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: #2a2a2a;
+    --border2: #333;
+    --accent: #c8f04a;
+    --accent2: #a8d43a;
+    --text: #e8e8e2;
+    --muted: #888;
+    --muted2: #666;
+    --red: #ff5e5e;
+    --amber: #f0a030;
+    --blue: #5eaaff;
+    --green: #4ade80;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border2);
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+    gap: 24px;
+  }
+
+  .header-left .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .header-left h1 {
+    font-size: 26px;
+    font-weight: 300;
+    letter-spacing: -.02em;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .header-left h1 span { color: var(--accent); font-weight: 500; }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    min-width: 260px;
+  }
+
+  .meta-field {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+  }
+
+  .meta-field label {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .meta-field input {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    width: 100%;
+    padding: 0;
+  }
+
+  .meta-field input::placeholder { color: var(--muted2); }
+
+  /* PROGRESS */
+  .progress-bar {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 3px;
+    background: var(--border2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    width: 0%;
+    transition: width .4s ease;
+  }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .progress-label span { color: var(--accent); }
+
+  /* TIMER */
+  .timer-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 36px;
+    gap: 16px;
+  }
+
+  .timer-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .timer-display {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    color: var(--accent);
+    letter-spacing: .05em;
+    min-width: 68px;
+  }
+
+  .timer-display.warning { color: var(--amber); }
+  .timer-display.danger { color: var(--red); }
+
+  .timer-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .timer-btns { display: flex; gap: 8px; }
+
+  .t-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border2);
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .15s;
+  }
+
+  .t-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .t-btn.running { border-color: rgba(255,94,94,.4); color: var(--red); }
+
+  /* SECTIONS */
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    background: rgba(200,240,74,.08);
+    border: 1px solid rgba(200,240,74,.2);
+    border-radius: 4px;
+    padding: 2px 7px;
+    letter-spacing: .05em;
+  }
+
+  .section-title {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .section-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted2);
+    margin-left: auto;
+    letter-spacing: .04em;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* SCRIPT BLOCKS */
+  .script-block {
+    background: rgba(200,240,74,.04);
+    border: 1px solid rgba(200,240,74,.15);
+    border-left: 3px solid rgba(200,240,74,.5);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  .script-block .script-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-style: normal;
+  }
+
+  .script-block strong { color: var(--accent); font-weight: 500; font-style: normal; }
+
+  /* PITCH BLOCK */
+  .pitch-block {
+    background: rgba(94,170,255,.05);
+    border: 1px solid rgba(94,170,255,.2);
+    border-left: 3px solid rgba(94,170,255,.6);
+    border-radius: 0 6px 6px 0;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  .pitch-block .pitch-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 8px;
+    font-style: normal;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .pitch-block .pitch-label::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--blue);
+    border-radius: 50%;
+  }
+
+  .pitch-block strong { color: var(--blue); font-weight: 500; font-style: normal; }
+  .pitch-block em { color: var(--accent); font-style: italic; }
+
+  /* QUESTION CARDS */
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 10px;
+    transition: border-color .15s;
+    position: relative;
+  }
+
+  .q-card:hover { border-color: var(--border2); }
+  .q-card.answered { border-color: rgba(200,240,74,.3); }
+  .q-card.flagged { border-color: rgba(255,94,94,.35); }
+
+  .q-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .q-index {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted2);
+    padding-top: 3px;
+    min-width: 20px;
+  }
+
+  .q-text {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text);
+    flex: 1;
+    line-height: 1.5;
+  }
+
+  .q-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .tag-pain    { background: rgba(255,94,94,.12);   color: var(--red);   border: 1px solid rgba(255,94,94,.2); }
+  .tag-ctx     { background: rgba(136,136,136,.1);  color: var(--muted); border: 1px solid rgba(136,136,136,.2); }
+  .tag-signal  { background: rgba(240,160,48,.1);   color: var(--amber); border: 1px solid rgba(240,160,48,.2); }
+  .tag-close   { background: rgba(200,240,74,.08);  color: var(--accent);border: 1px solid rgba(200,240,74,.15); }
+
+  .q-why {
+    margin-left: 32px;
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.55;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-left: 2px solid var(--border2);
+  }
+
+  .q-answer { margin-left: 32px; }
+
+  .q-answer textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 8px 10px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    resize: vertical;
+    min-height: 52px;
+    outline: none;
+    transition: border-color .15s;
+    line-height: 1.5;
+  }
+
+  .q-answer textarea:focus { border-color: rgba(200,240,74,.4); }
+  .q-answer textarea::placeholder { color: var(--muted2); font-style: italic; }
+
+  .q-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .q-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .15s;
+  }
+
+  .q-btn:hover { border-color: var(--border2); color: var(--text); }
+  .q-btn.btn-flag { border-color: rgba(255,94,94,.2); color: rgba(255,94,94,.6); }
+  .q-btn.btn-flag:hover { border-color: var(--red); color: var(--red); }
+  .q-btn.btn-flag.active { background: rgba(255,94,94,.1); border-color: var(--red); color: var(--red); }
+
+  /* CLOSE SCRIPT */
+  .close-block {
+    background: rgba(74,222,128,.04);
+    border: 1px solid rgba(74,222,128,.2);
+    border-left: 3px solid rgba(74,222,128,.5);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    margin-top: 16px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  .close-block .close-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 8px;
+    font-style: normal;
+  }
+
+  .close-block strong { color: var(--green); font-weight: 500; font-style: normal; }
+
+  /* NOTES */
+  .notes-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 36px;
+  }
+
+  .notes-block label {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .notes-block textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+    line-height: 1.6;
+    transition: border-color .15s;
+  }
+
+  .notes-block textarea:focus { border-color: rgba(200,240,74,.4); }
+  .notes-block textarea::placeholder { color: var(--muted2); font-style: italic; }
+
+  /* SCORE */
+  .score-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 36px;
+  }
+
+  .score-header {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .score-item label {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .star-row { display: flex; gap: 4px; }
+
+  .star {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    color: var(--border2);
+    font-size: 16px;
+    transition: color .1s;
+    user-select: none;
+  }
+
+  .star.lit { color: var(--accent); }
+
+  .verdict-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .verdict-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .15s;
+  }
+
+  .verdict-btn:hover { border-color: var(--border2); color: var(--text); }
+  .verdict-btn.v-yes.active  { background: rgba(200,240,74,.12); border-color: var(--accent); color: var(--accent); }
+  .verdict-btn.v-maybe.active{ background: rgba(240,160,48,.1);  border-color: var(--amber);  color: var(--amber); }
+  .verdict-btn.v-no.active   { background: rgba(255,94,94,.1);   border-color: var(--red);    color: var(--red); }
+
+  /* FOOTER */
+  .footer-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0f0f0f;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background .15s;
+  }
+
+  .btn-primary:hover { background: var(--accent2); }
+
+  .btn-secondary {
+    background: none;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all .15s;
+  }
+
+  .btn-secondary:hover { border-color: var(--border2); color: var(--text); }
+
+  /* OBJECTION TRACKER */
+  .obj-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .obj-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all .15s;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .obj-item:hover { border-color: var(--border2); color: var(--text); }
+  .obj-item.selected { background: rgba(255,94,94,.08); border-color: rgba(255,94,94,.3); color: var(--red); }
+
+  .obj-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    flex-shrink: 0;
+    transition: background .1s;
+  }
+
+  .obj-item.selected .obj-dot { background: currentColor; }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .page { padding: 20px; }
+    .q-card { background: #f9f9f9; border-color: #ddd; break-inside: avoid; }
+    .q-answer textarea { background: #fff; border-color: #ccc; min-height: 60px; }
+    .footer-actions, .timer-bar, .t-btn { display: none; }
+    .progress-bar { display: none; }
+    .script-block, .pitch-block, .close-block { background: #f5f5f5; border-color: #ccc; }
+    .score-section, .notes-block { background: #f5f5f5; }
+    .q-btn { display: none; }
+    .obj-item { background: #f5f5f5; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="label">SEN Acquisition · UAE Pest Control</div>
+      <h1>10-Min Validation <span>Call Script</span></h1>
+    </div>
+    <div class="meta-grid">
+      <div class="meta-field">
+        <label>Business Name</label>
+        <input type="text" placeholder="e.g. Gulf Pest Control">
+      </div>
+      <div class="meta-field">
+        <label>Contact</label>
+        <input type="text" placeholder="Name & title">
+      </div>
+      <div class="meta-field">
+        <label>Date</label>
+        <input type="date">
+      </div>
+      <div class="meta-field">
+        <label>Called By</label>
+        <input type="text" placeholder="Your name">
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar">
+    <span class="progress-label"><span id="answered-count">0</span> / 10 answered</span>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <span class="progress-label" id="progress-pct">0%</span>
+  </div>
+
+  <!-- TIMER -->
+  <div class="timer-bar">
+    <div class="timer-left">
+      <div>
+        <div class="timer-display" id="timer-display">10:00</div>
+        <div class="timer-label">Call timer</div>
+      </div>
+    </div>
+    <div class="timer-btns">
+      <button class="t-btn" id="timer-toggle" onclick="toggleTimer()">Start</button>
+      <button class="t-btn" onclick="resetTimer()">Reset</button>
+    </div>
+  </div>
+
+  <!-- SECTION 1: OPENER -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title">Opener</div>
+      <div class="section-line"></div>
+      <div class="section-time">~30 sec</div>
+    </div>
+
+    <div class="script-block">
+      <div class="script-label">Say exactly this</div>
+      "Hey [name], thanks for the few minutes. I'm researching how pest control businesses in Dubai handle customer communication. I've got about 8 questions — totally informal, no pitch. I just want to understand how things work for you today. Cool?"
+    </div>
+  </div>
+
+  <!-- SECTION 2: CONTEXT -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title">Context</div>
+      <div class="section-line"></div>
+      <div class="section-time">~1 min</div>
+    </div>
+
+    <div class="q-card" data-qid="1">
+      <div class="q-top">
+        <div class="q-index">01</div>
+        <div class="q-text">How big is the operation — roughly how many jobs a month, and who handles customer messages day-to-day?</div>
+        <div class="q-tag tag-ctx">Context</div>
+      </div>
+      <div class="q-why">Two-in-one to move fast. Tells you their scale and whether you're talking to the decision maker or a gatekeeper.</div>
+      <div class="q-answer">
+        <textarea placeholder="Note size + who handles comms — owner, receptionist, technicians?"></textarea>
+        <div class="q-actions">
+          <button class="q-btn btn-flag" onclick="toggleFlag(this)">⚑ Flag</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: PAIN -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title">Pain — Missed Leads & Response</div>
+      <div class="section-line"></div>
+      <div class="section-time">~3 min</div>
+    </div>
+
+    <div class="q-card" data-qid="2">
+      <div class="q-top">
+        <div class="q-index">02</div>
+        <div class="q-text">When a new customer messages you on WhatsApp at 9pm or on a Friday — what actually happens to that message?</div>
+        <div class="q-tag tag-pain">Pain</div>
+      </div>
+      <div class="q-why">The most revealing question. Silence = lost leads. Let them describe it — don't fill the gap for them.</div>
+      <div class="q-answer">
+        <textarea placeholder="Do messages sit? Who picks them up? System or chaos?"></textarea>
+        <div class="q-actions">
+          <button class="q-btn btn-flag" onclick="toggleFlag(this)">⚑ Flag</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card" data-qid="3">
+      <div class="q-top">
+        <div class="q-index">03</div>
+        <div class="q-text">Has a customer ever gone to a competitor because you were slow to respond — or do you know of jobs you've lost that way?</div>
+        <div class="q-tag tag-pain">Pain</div>
+      </div>
+      <div class="q-why">Quantifies the pain. One clear example is enough. "Happens all the time" = your ROI hook.</div>
+      <div class="q-answer">
+        <textarea placeholder="Get a rough frequency or a specific story. Exact words matter."></textarea>
+        <div class="q-actions">
+          <button class="q-btn btn-flag" onclick="toggleFlag(this)">⚑ Flag</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card" data-qid="4">
+      <div class="q-top">
+        <div class="q-index">04</div>
+        <div class="q-text">After a job is done — do you follow up with the customer at all? Ask for a Google review, check if they're happy, anything like that?</div>
+        <div class="q-tag tag-pain">Pain</div>
+      </div>
+      <div class="q-why">Almost nobody does this systematically. Reveals both the review opportunity and the retention gap in one answer.</div>
+      <div class="q-answer">
+        <textarea placeholder="Yes/no and how — manual, WhatsApp, nothing? How many reviews per month roughly?"></textarea>
+        <div class="q-actions">
+          <button class="q-btn btn-flag" onclick="toggleFlag(this)">⚑ Flag</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card" data-qid="5">
+      <div class="q-top">
+        <div class="q-index">05</div>
+        <div class="q-text">Do you have any annual maintenance contracts with commercial clients — and when they're up for renewal, how do you currently handle that?</div>
+        <div class="q-tag tag-signal">Signal</div>
+      </div>
+      <div class="q-why">If they have AMCs, this is the biggest upsell angle. Manual renewals = a quantifiable revenue leak that often outweighs the chatbot value.</div>
+      <div class="q-answer">
+        <textarea placeholder="% of revenue from AMCs? Manual calls, forgotten, or a proper process?"></textarea>
+        <div class="q-actions">
+          <button class="q-btn btn-flag" onclick="toggleFlag(this)">⚑ Flag</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: TECH FIT -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title">Tech & Fit</div>
+      <div class="section-line"></div>
+      <div class="section-time">~1 min</div>
+    </div>
+
+    <div class="q-card" data-qid="6">
+      <div class="q-top">
+        <div class="q-index">06</div>
+        <div class="q-text">Are you using WhatsApp Business or a personal WhatsApp number for the business right now — and do you have a website?</div>
+        <div class="q-tag tag-signal">Signal</div>
+      </div>
+      <div class="q-why">Critical qualifier. Personal WA = migration step needed. No website = the landing page is an easy win to pitch. Shapes your tier recommendation.</div>
+      <div class="q-answer">
+        <textarea placeholder="WA Business or personal? Website yes/no? Any other tools — booking software, CRM?"></textarea>
+        <div class="q-actions">
+          <button class="q-btn btn-flag" onclick="toggleFlag(this)">⚑ Flag</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: TEMPERATURE CHECK -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title">Temperature Check — The Pitch</div>
+      <div class="section-line"></div>
+      <div class="section-time">~3 min</div>
+    </div>
+
+    <div class="script-block" style="margin-bottom:10px">
+      <div class="script-label">Transition line</div>
+      "Based on what you've told me, I want to share what we're building in one sentence and get your honest reaction — takes 30 seconds."
+    </div>
+
+    <div class="pitch-block">
+      <div class="pitch-label">The pitch — say this word for word</div>
+      "We build a <strong>complete revenue system</strong> for pest control businesses in Dubai. Think of it this way — right now you're probably <em>losing leads</em> because no one replies fast enough, <em>losing reviews</em> because no one asks, and <em>losing contracts</em> because renewals slip. We fix all three: a WhatsApp bot that replies to every customer instantly, handles bookings and AMC renewals automatically — a <strong>dashboard</strong> where you can see every lead, every job, your close rate, basically your whole business on one screen — and if you don't have a website, <strong>we build you one</strong> that shows live Google reviews and converts visitors into calls. Does that sound like something your business actually needs, or are you already on top of all that?"
+    </div>
+
+    <div class="q-card" data-qid="7">
+      <div class="q-top">
+        <div class="q-index">07</div>
+        <div class="q-text">Which part of that lands hardest for you — is it the leads, the reviews, the AMC renewals, the dashboard, or the website?</div>
+        <div class="q-tag tag-close">Close signal</div>
+      </div>
+      <div class="q-why">Forces them to tell you your own strongest hook for this specific customer. Whatever they pick — that's what you demo first.</div>
+      <div class="q-answer">
+        <textarea placeholder="Note which feature they react to most — that's your in for the demo."></textarea>
+        <div class="q-actions">
+          <button class="q-btn btn-flag" onclick="toggleFlag(this)">⚑ Flag</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card" data-qid="8">
+      <div class="q-top">
+        <div class="q-index">08</div>
+        <div class="q-text">What's your gut hesitation — is it that customers want a real person, you've tried something like this before, price, or something else?</div>
+        <div class="q-tag tag-close">Close signal</div>
+      </div>
+      <div class="q-why">Forces them to name the objection. Pause after "or something else." The real objection is usually the last thing they say.</div>
+      <div class="q-answer">
+        <textarea placeholder="Write down exact phrasing — this becomes your objection-handling script for every future call."></textarea>
+        <div class="q-actions">
+          <button class="q-btn btn-flag" onclick="toggleFlag(this)">⚑ Flag</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OBJECTION TRACKER -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Quick-tap objection tracker</div>
+      <div class="obj-grid">
+        <div class="obj-item" onclick="this.classList.toggle('selected')"><div class="obj-dot"></div>"Customers want a real person"</div>
+        <div class="obj-item" onclick="this.classList.toggle('selected')"><div class="obj-dot"></div>"Tried something like this before"</div>
+        <div class="obj-item" onclick="this.classList.toggle('selected')"><div class="obj-dot"></div>"Too expensive"</div>
+        <div class="obj-item" onclick="this.classList.toggle('selected')"><div class="obj-dot"></div>"Need to think about it"</div>
+        <div class="obj-item" onclick="this.classList.toggle('selected')"><div class="obj-dot"></div>"My customers don't use WhatsApp"</div>
+        <div class="obj-item" onclick="this.classList.toggle('selected')"><div class="obj-dot"></div>"My team handles it fine"</div>
+        <div class="obj-item" onclick="this.classList.toggle('selected')"><div class="obj-dot"></div>"Not the right time"</div>
+        <div class="obj-item" onclick="this.classList.toggle('selected')"><div class="obj-dot"></div>Other — noted in Q8 answer</div>
+      </div>
+    </div>
+
+    <div class="q-card" data-qid="9">
+      <div class="q-top">
+        <div class="q-index">09</div>
+        <div class="q-text">If something like this demonstrably got you more bookings and reviews — what would be a fair monthly fee in your head? Even a rough number.</div>
+        <div class="q-tag tag-close">Close signal</div>
+      </div>
+      <div class="q-why">Let them anchor first. Do not say a number. "I'm not sure" = they haven't thought about budget. AED 500+ means you're in range.</div>
+      <div class="q-answer">
+        <textarea placeholder="Their number exactly — AED 300? 1,000? 'Depends on results'? Note it."></textarea>
+        <div class="q-actions">
+          <button class="q-btn btn-flag" onclick="toggleFlag(this)">⚑ Flag</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card" data-qid="10">
+      <div class="q-top">
+        <div class="q-index">10</div>
+        <div class="q-text">We're running a 30-day pilot at half price with 3 businesses in Dubai this month — zero obligation after. Would you want to be one of them?</div>
+        <div class="q-tag tag-close">Close signal</div>
+      </div>
+      <div class="q-why">The real close. Yes = get their number before you hang up. Maybe = ask what would make it a yes. No = ask why — it's your best research.</div>
+      <div class="q-answer">
+        <textarea placeholder="Yes / maybe / no — and the exact reason. If yes: get their WhatsApp number now."></textarea>
+        <div class="q-actions">
+          <button class="q-btn btn-flag" onclick="toggleFlag(this)">⚑ Flag</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSING LINES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title">Closing Lines</div>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="close-block">
+      <div class="close-label">If yes or maybe</div>
+      "Brilliant — let me send you a quick voice note on WhatsApp summarising exactly what we'd set up for you, takes 2 minutes. What's your WhatsApp number?"
+    </div>
+
+    <div class="close-block">
+      <div class="close-label">If no</div>
+      "Totally fair. One last thing — is there anything about this you'd want to see before considering it, or is this just not the right time?" Then thank them and move on. Don't rescue them from a no — just understand it.
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="notes-block">
+    <label>General Notes & Observations</label>
+    <textarea placeholder="Anything notable — their tone, specific phrases, context that doesn't fit a question, follow-up actions..."></textarea>
+  </div>
+
+  <!-- SCORING -->
+  <div class="score-section">
+    <div class="score-header">Lead Qualification Score</div>
+    <div class="score-grid">
+      <div class="score-item">
+        <label>Pain level</label>
+        <div class="star-row" data-category="pain">
+          <span class="star" onclick="rateStar(this,1)">★</span>
+          <span class="star" onclick="rateStar(this,2)">★</span>
+          <span class="star" onclick="rateStar(this,3)">★</span>
+          <span class="star" onclick="rateStar(this,4)">★</span>
+          <span class="star" onclick="rateStar(this,5)">★</span>
+        </div>
+      </div>
+      <div class="score-item">
+        <label>Budget openness</label>
+        <div class="star-row" data-category="budget">
+          <span class="star" onclick="rateStar(this,1)">★</span>
+          <span class="star" onclick="rateStar(this,2)">★</span>
+          <span class="star" onclick="rateStar(this,3)">★</span>
+          <span class="star" onclick="rateStar(this,4)">★</span>
+          <span class="star" onclick="rateStar(this,5)">★</span>
+        </div>
+      </div>
+      <div class="score-item">
+        <label>Decision maker reached</label>
+        <div class="star-row" data-category="dm">
+          <span class="star" onclick="rateStar(this,1)">★</span>
+          <span class="star" onclick="rateStar(this,2)">★</span>
+          <span class="star" onclick="rateStar(this,3)">★</span>
+          <span class="star" onclick="rateStar(this,4)">★</span>
+          <span class="star" onclick="rateStar(this,5)">★</span>
+        </div>
+      </div>
+      <div class="score-item">
+        <label>Tech readiness</label>
+        <div class="star-row" data-category="tech">
+          <span class="star" onclick="rateStar(this,1)">★</span>
+          <span class="star" onclick="rateStar(this,2)">★</span>
+          <span class="star" onclick="rateStar(this,3)">★</span>
+          <span class="star" onclick="rateStar(this,4)">★</span>
+          <span class="star" onclick="rateStar(this,5)">★</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:6px">Verdict</label>
+      <div class="verdict-row">
+        <button class="verdict-btn v-yes"  onclick="setVerdict(this,'yes')">✓ Strong prospect — book demo</button>
+        <button class="verdict-btn v-maybe" onclick="setVerdict(this,'maybe')">~ Follow up in 2 weeks</button>
+        <button class="verdict-btn v-no"   onclick="setVerdict(this,'no')">✗ Not a fit — move on</button>
+      </div>
+    </div>
+
+    <div>
+      <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:6px">Next action</label>
+      <input type="text" placeholder="e.g. Send WA voice note, book demo Thu, loop in Arabic speaker..."
+        style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:8px 10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none">
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-actions">
+    <button class="btn-primary" onclick="window.print()">Print / Save PDF</button>
+    <button class="btn-secondary" onclick="clearAll()">Clear form</button>
+  </div>
+
+</div>
+
+<script>
+  const TOTAL = 10;
+  let timerInterval = null;
+  let secondsLeft = 600;
+  let running = false;
+
+  /* PROGRESS */
+  function updateProgress() {
+    let answered = 0;
+    document.querySelectorAll('.q-card').forEach(card => {
+      const ta = card.querySelector('textarea');
+      if (ta && ta.value.trim().length > 2) answered++;
+    });
+    document.getElementById('answered-count').textContent = answered;
+    const pct = Math.round((answered / TOTAL) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-pct').textContent = pct + '%';
+  }
+
+  document.querySelectorAll('.q-answer textarea').forEach(ta => {
+    ta.addEventListener('input', () => {
+      const card = ta.closest('.q-card');
+      card.classList.toggle('answered', ta.value.trim().length > 2);
+      updateProgress();
+    });
+  });
+
+  /* TIMER */
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+  }
+
+  function updateTimerDisplay() {
+    const el = document.getElementById('timer-display');
+    el.textContent = formatTime(secondsLeft);
+    el.className = 'timer-display';
+    if (secondsLeft <= 60) el.classList.add('danger');
+    else if (secondsLeft <= 180) el.classList.add('warning');
+  }
+
+  function toggleTimer() {
+    const btn = document.getElementById('timer-toggle');
+    if (running) {
+      clearInterval(timerInterval);
+      running = false;
+      btn.textContent = 'Resume';
+      btn.classList.remove('running');
+    } else {
+      if (secondsLeft === 0) return;
+      running = true;
+      btn.textContent = 'Pause';
+      btn.classList.add('running');
+      timerInterval = setInterval(() => {
+        secondsLeft--;
+        updateTimerDisplay();
+        if (secondsLeft <= 0) {
+          clearInterval(timerInterval);
+          running = false;
+          btn.textContent = 'Done';
+          btn.classList.remove('running');
+        }
+      }, 1000);
+    }
+  }
+
+  function resetTimer() {
+    clearInterval(timerInterval);
+    running = false;
+    secondsLeft = 600;
+    updateTimerDisplay();
+    const btn = document.getElementById('timer-toggle');
+    btn.textContent = 'Start';
+    btn.classList.remove('running');
+  }
+
+  /* FLAG */
+  function toggleFlag(btn) {
+    btn.classList.toggle('active');
+    btn.closest('.q-card').classList.toggle('flagged');
+  }
+
+  /* STARS */
+  function rateStar(el, val) {
+    const row = el.closest('.star-row');
+    row.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('lit', i < val));
+  }
+
+  /* VERDICT */
+  function setVerdict(btn, v) {
+    document.querySelectorAll('.verdict-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  /* CLEAR */
+  function clearAll() {
+    if (!confirm('Clear all answers and scores?')) return;
+    document.querySelectorAll('textarea, input[type=text]').forEach(el => el.value = '');
+    document.querySelectorAll('.q-card').forEach(c => c.classList.remove('answered','flagged'));
+    document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.star').forEach(s => s.classList.remove('lit'));
+    document.querySelectorAll('.verdict-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.obj-item').forEach(o => o.classList.remove('selected'));
+    resetTimer();
+    updateProgress();
+  }
+
+  updateTimerDisplay();
+  updateProgress();
+</script>
+</body>
+</html>
